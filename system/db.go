@@ -5,6 +5,7 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/minand-mohan/library-app-api/database"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -65,5 +66,6 @@ func NewDataSource() *DataSource {
 	}
 	sqlDB.SetMaxIdleConns(10)
 	sqlDB.SetMaxOpenConns(100)
+	database.Migrate(db)
 	return &DataSource{DB: db}
 }
