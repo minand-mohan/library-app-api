@@ -1,0 +1,12 @@
+version: "3"
+services:
+  library-api-db:
+    image: postgres:13
+    restart: always
+    container_name: library-api-db
+    ports:
+      - "5455:5432"
+    environment:
+      - POSTGRES_DB=librarydb
+      - POSTGRES_USER=libraryadmin
+      - POSTGRES_PASSWORD=testing1234
