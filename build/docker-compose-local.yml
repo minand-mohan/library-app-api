@@ -1,5 +1,22 @@
 version: "3"
 services:
+  library-api-service:
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: "library-api-service"
+    platform: linux/amd64
+    env_file: ./deploy/docker/.env
+    ports:
+      - "8080:8080"
+    depends_on:
+      - webcli-service-db
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      timeout: 5s
+      retries: 3
+    command: /bin/sh -c 'sleep 3; /opt/minand-mohan/library-app-api/bin/server;'
   library-api-db:
     image: postgres:13
     restart: always
@@ -10,3 +27,11 @@ services:
       - POSTGRES_DB=librarydb
       - POSTGRES_USER=libraryadmin
       - POSTGRES_PASSWORD=testing1234
+    volumes:
+      - postgres-data:/var/lib/postgresql/datastore
+      - ./deploy/docker/bin/init-database.sh:/docker-entrypoint-initdb.d/init-database.sh
+    healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U postgres"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
