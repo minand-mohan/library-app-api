@@ -9,6 +9,7 @@ import (
 	"syscall"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/minand-mohan/library-app-api/api/response"
 	"github.com/minand-mohan/library-app-api/system"
 	"github.com/minand-mohan/library-app-api/utils"
 )
@@ -27,6 +28,7 @@ func NewServer() *APIServer {
 		ServerHeader:          "minand-mohan/library-app-api",
 		Concurrency:           1024,
 		DisableStartupMessage: false,
+		ErrorHandler:          response.DefaultErrorHandler,
 	})
 	appLogger := utils.NewLogger()
 	return &APIServer{
