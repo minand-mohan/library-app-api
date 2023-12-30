@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/google/uuid"
 	"github.com/minand-mohan/library-app-api/api/response"
 	"github.com/minand-mohan/library-app-api/api/users/dto"
 	"github.com/minand-mohan/library-app-api/api/users/repository"
@@ -14,7 +15,7 @@ import (
 type UserService interface {
 	CreateUser(userReqBody *dto.UserRequestBody) (*response.HTTPResponse, error)
 	FindAllUsers() (*response.HTTPResponse, error)
-	// FindById(id uint) (*model.User, error)
+	FindByUserId(id uuid.UUID) (*response.HTTPResponse, error)
 	// UpdateById(id uint, user *model.User) (*model.User, error)
 	// DeleteById(id uint) error
 }
@@ -109,6 +110,32 @@ func (service *UserServiceImpl) FindAllUsers() (*response.HTTPResponse, error) {
 	responseBody := response.HTTPResponse{
 		Code:    200,
 		Message: "Users found",
+		Content: responseContent,
+	}
+	return &responseBody, nil
+}
+
+func (service *UserServiceImpl) FindByUserId(id uuid.UUID) (*response.HTTPResponse, error) {
+	service.logger.Info("User Service: Find user by id")
+	user, err := service.repo.FindByUserId(id)
+	if err != nil {
+		service.logger.Error(fmt.Sprintf("UserService: Error while finding user by id: %s", err))
+		responseBody := response.HTTPResponse{
+			Code:    404,
+			Message: "User not found.",
+			Content: map[string]interface{}{},
+		}
+		return &responseBody, nil
+	}
+	responseContent := map[string]interface{}{
+		"id":       user.ID,
+		"username": user.Username,
+		"email":    user.Email,
+		"phone":    user.Phone,
+	}
+	responseBody := response.HTTPResponse{
+		Code:    200,
+		Message: "User found",
 		Content: responseContent,
 	}
 	return &responseBody, nil

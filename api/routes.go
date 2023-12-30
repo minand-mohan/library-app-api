@@ -32,7 +32,12 @@ func SetupRoutes(server *APIServer) {
 
 	libraryv1.Get("/users", middleware.KeyAuth, func(c *fiber.Ctx) error {
 		handler := GetDefaultUserHandler(server)
-		return handler.FindAll(c)
+		return handler.FindAllUsers(c)
+	})
+
+	libraryv1.Get("/users/:id", middleware.KeyAuth, func(c *fiber.Ctx) error {
+		handler := GetDefaultUserHandler(server)
+		return handler.FindByUserId(c)
 	})
 
 }
