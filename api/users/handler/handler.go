@@ -79,7 +79,41 @@ func (handler *UserHandler) CreateUser(ctx *fiber.Ctx) error {
 func (handler *UserHandler) FindAllUsers(ctx *fiber.Ctx) error {
 	log := utils.NewLogger()
 	log.Info("Find all users")
-	responseBody, err := handler.service.FindAllUsers()
+
+	queryParams := new(dto.UserQueryParams)
+	err := ctx.QueryParser(queryParams)
+	if err != nil {
+		log.Error(fmt.Sprintf("Error while parsing query params %v", err))
+		responseBody := response.HTTPResponse{
+			Code:    400,
+			Message: "Bad request, invalid query params",
+			Content: map[string]interface{}{},
+		}
+		err = response.WriteHTTPResponse(ctx, 400, &responseBody)
+		if err != nil {
+			log.Error(fmt.Sprintf("Error while writing response %v", err))
+			return err
+		}
+		return nil
+	}
+
+	err = handler.validator.ValidateUserQueryParams(queryParams)
+	if err != nil {
+		log.Error(fmt.Sprintf("Error while validating query params %v", err))
+		responseBody := response.HTTPResponse{
+			Code:    400,
+			Message: "Bad request, invalid query params",
+			Content: map[string]interface{}{},
+		}
+		err = response.WriteHTTPResponse(ctx, 400, &responseBody)
+		if err != nil {
+			log.Error(fmt.Sprintf("Error while writing response %v", err))
+			return err
+		}
+		return nil
+	}
+
+	responseBody, err := handler.service.FindAllUsers(queryParams)
 	if err != nil {
 		log.Error(fmt.Sprintf("UserHandler: Error while finding all users %v", err))
 		err = response.WriteHTTPResponse(ctx, responseBody.Code, responseBody)

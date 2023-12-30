@@ -5,3 +5,8 @@ type UserRequestBody struct {
 	Email    string `json:"email"`
 	Phone    string `json:"phone"`
 }
+
+type UserQueryParams struct {
+	Username string `query:"username"`
+	Email    string `query:"email"`
+}

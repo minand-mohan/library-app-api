@@ -14,7 +14,7 @@ import (
 
 type UserService interface {
 	CreateUser(userReqBody *dto.UserRequestBody) (*response.HTTPResponse, error)
-	FindAllUsers() (*response.HTTPResponse, error)
+	FindAllUsers(queryParams *dto.UserQueryParams) (*response.HTTPResponse, error)
 	FindByUserId(id uuid.UUID) (*response.HTTPResponse, error)
 	UpdateByUserId(id uuid.UUID, userReqBody *dto.UserRequestBody) (*response.HTTPResponse, error)
 	DeleteByUserId(id uuid.UUID) (*response.HTTPResponse, error)
@@ -84,9 +84,9 @@ func (service *UserServiceImpl) CreateUser(userReq *dto.UserRequestBody) (*respo
 	return &responseBody, nil
 }
 
-func (service *UserServiceImpl) FindAllUsers() (*response.HTTPResponse, error) {
+func (service *UserServiceImpl) FindAllUsers(queryParams *dto.UserQueryParams) (*response.HTTPResponse, error) {
 	service.logger.Info("User Service: Find all users")
-	users, err := service.repo.FindAllUsers()
+	users, err := service.repo.FindAllUsers(queryParams)
 	if err != nil {
 		service.logger.Error(fmt.Sprintf("UserService: Error while finding all users: %s", err))
 		return nil, err

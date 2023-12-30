@@ -10,6 +10,7 @@ import (
 
 type UserValidator interface {
 	ValidateUser(requestBody *dto.UserRequestBody) error
+	ValidateUserQueryParams(queryParams *dto.UserQueryParams) error
 	// ValidateUpdate(user *model.User) error
 	// ValidateDelete(user *model.User) error
 }
@@ -44,6 +45,15 @@ func (validator *UserValidatorImpl) ValidateUser(userReq *dto.UserRequestBody) e
 		return errors.New("Phone is empty")
 	}
 	if !isValidEmail(userReq.Email) {
+		validator.logger.Error("Email is invalid")
+		return errors.New("Email is invalid")
+	}
+
+	return nil
+}
+
+func (validator *UserValidatorImpl) ValidateUserQueryParams(queryParams *dto.UserQueryParams) error {
+	if queryParams.Email != "" && !isValidEmail(queryParams.Email) {
 		validator.logger.Error("Email is invalid")
 		return errors.New("Email is invalid")
 	}
