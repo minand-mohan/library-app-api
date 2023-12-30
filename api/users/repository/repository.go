@@ -13,7 +13,7 @@ type UserRepository interface {
 	FindAllUsers() ([]models.User, error)
 	FindByUserId(id uuid.UUID) (*models.User, error)
 	UpdateByUserId(id uuid.UUID, user *models.User) (*models.User, error)
-	// DeleteById(id uint) error
+	DeleteByUserId(id uuid.UUID) error
 }
 
 type UserRepositoryImpl struct {
@@ -74,4 +74,13 @@ func (repo *UserRepositoryImpl) UpdateByUserId(id uuid.UUID, user *models.User) 
 		return nil, result.Error
 	}
 	return user, nil
+}
+
+func (repo *UserRepositoryImpl) DeleteByUserId(id uuid.UUID) error {
+	var user models.User
+	result := repo.db.Delete(&user, id)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
 }

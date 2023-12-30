@@ -19,12 +19,11 @@ func GetDefaultUserHandler(server *APIServer) *userHandler.UserHandler {
 }
 
 func SetupRoutes(server *APIServer) {
-	// app.Get("/", func(c *fiber.Ctx) error {
-	// 	return c.SendString("Hello, World!")
-	// })
+
 	app := server.app
 	libraryv1 := app.Group("/library-app/api/v1")
 
+	// User routes
 	libraryv1.Post("/users", middleware.KeyAuth, func(c *fiber.Ctx) error {
 		handler := GetDefaultUserHandler(server)
 		return handler.CreateUser(c)
@@ -43,6 +42,11 @@ func SetupRoutes(server *APIServer) {
 	libraryv1.Put("/users/:id", middleware.KeyAuth, func(c *fiber.Ctx) error {
 		handler := GetDefaultUserHandler(server)
 		return handler.UpdateByUserId(c)
+	})
+
+	libraryv1.Delete("/users/:id", middleware.KeyAuth, func(c *fiber.Ctx) error {
+		handler := GetDefaultUserHandler(server)
+		return handler.DeleteByUserId(c)
 	})
 
 }
