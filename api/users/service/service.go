@@ -13,7 +13,7 @@ import (
 
 type UserService interface {
 	CreateUser(userReqBody *dto.UserRequestBody) (*response.HTTPResponse, error)
-	// FindAll() ([]model.User, error)
+	FindAllUsers() (*response.HTTPResponse, error)
 	// FindById(id uint) (*model.User, error)
 	// UpdateById(id uint, user *model.User) (*model.User, error)
 	// DeleteById(id uint) error
@@ -80,5 +80,36 @@ func (service *UserServiceImpl) CreateUser(userReq *dto.UserRequestBody) (*respo
 		Content: responseContent,
 	}
 
+	return &responseBody, nil
+}
+
+func (service *UserServiceImpl) FindAllUsers() (*response.HTTPResponse, error) {
+	service.logger.Info("User Service: Find all users")
+	users, err := service.repo.FindAllUsers()
+	if err != nil {
+		service.logger.Error(fmt.Sprintf("UserService: Error while finding all users: %s", err))
+		return nil, err
+	}
+	var usersMap []map[string]interface{}
+	for _, user := range users {
+		userMap := map[string]interface{}{
+			"id":       user.ID,
+			"username": user.Username,
+			"email":    user.Email,
+			"phone":    user.Phone,
+		}
+		usersMap = append(usersMap, userMap)
+	}
+	responseContent := response.HTTPResponseContent{
+		Count:    len(users),
+		Previous: nil,
+		Next:     nil,
+		Results:  usersMap,
+	}
+	responseBody := response.HTTPResponse{
+		Code:    200,
+		Message: "Users found",
+		Content: responseContent,
+	}
 	return &responseBody, nil
 }

@@ -78,11 +78,20 @@ func (handler *UserHandler) CreateUser(ctx *fiber.Ctx) error {
 func (handler *UserHandler) FindAll(ctx *fiber.Ctx) error {
 	log := utils.NewLogger()
 	log.Info("Find all users")
-	responseBody := response.HTTPResponse{
-		Code:    200,
-		Message: "Not implemented",
-		Content: map[string]interface{}{},
+	responseBody, err := handler.service.FindAllUsers()
+	if err != nil {
+		log.Error(fmt.Sprintf("UserHandler: Error while finding all users %v", err))
+		err = response.WriteHTTPResponse(ctx, responseBody.Code, responseBody)
+		if err != nil {
+			log.Error(fmt.Sprintf("Error while writing response %v", err))
+			return err
+		}
+		return nil
 	}
-	response.WriteHTTPResponse(ctx, 200, &responseBody)
+	err = response.WriteHTTPResponse(ctx, 200, responseBody)
+	if err != nil {
+		log.Error(fmt.Sprintf("Error while writing response %v", err))
+		return err
+	}
 	return nil
 }
