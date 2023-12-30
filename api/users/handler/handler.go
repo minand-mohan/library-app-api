@@ -27,13 +27,6 @@ func NewUserHandler(service service.UserService, validator validator.UserValidat
 func (handler *UserHandler) CreateUser(ctx *fiber.Ctx) error {
 	log := utils.NewLogger()
 	log.Info("Create user")
-	// responseBody := response.HTTPResponse{
-	// 	Code:    200,
-	// 	Message: "Not implemented",
-	// 	Content: map[string]interface{}{},
-	// }
-	// response.WriteHTTPResponse(c, 200, &responseBody)
-	// return nil
 	var userReq *dto.UserRequestBody
 	err := json.Unmarshal(ctx.Request().Body(), &userReq)
 	if err != nil {
@@ -80,4 +73,16 @@ func (handler *UserHandler) CreateUser(ctx *fiber.Ctx) error {
 	response.WriteHTTPResponse(ctx, 200, responseBody)
 	return nil
 
+}
+
+func (handler *UserHandler) FindAll(ctx *fiber.Ctx) error {
+	log := utils.NewLogger()
+	log.Info("Find all users")
+	responseBody := response.HTTPResponse{
+		Code:    200,
+		Message: "Not implemented",
+		Content: map[string]interface{}{},
+	}
+	response.WriteHTTPResponse(ctx, 200, &responseBody)
+	return nil
 }
