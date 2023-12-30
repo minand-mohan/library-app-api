@@ -40,4 +40,9 @@ func SetupRoutes(server *APIServer) {
 		return handler.FindByUserId(c)
 	})
 
+	libraryv1.Put("/users/:id", middleware.KeyAuth, func(c *fiber.Ctx) error {
+		handler := GetDefaultUserHandler(server)
+		return handler.UpdateByUserId(c)
+	})
+
 }

@@ -9,7 +9,7 @@ import (
 )
 
 type UserValidator interface {
-	ValidateCreateUser(requestBody *dto.UserRequestBody) error
+	ValidateUser(requestBody *dto.UserRequestBody) error
 	// ValidateUpdate(user *model.User) error
 	// ValidateDelete(user *model.User) error
 }
@@ -29,8 +29,8 @@ func isValidEmail(email string) bool {
 	return err == nil
 }
 
-func (validator *UserValidatorImpl) ValidateCreateUser(userReq *dto.UserRequestBody) error {
-	validator.logger.Info("Validate create user")
+func (validator *UserValidatorImpl) ValidateUser(userReq *dto.UserRequestBody) error {
+	validator.logger.Info("Validate user")
 	if userReq.Username == "" {
 		validator.logger.Error("Username is empty")
 		return errors.New("Username is empty")
