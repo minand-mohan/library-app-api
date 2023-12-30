@@ -91,6 +91,15 @@ func (service *UserServiceImpl) FindAllUsers(queryParams *dto.UserQueryParams) (
 		service.logger.Error(fmt.Sprintf("UserService: Error while finding all users: %s", err))
 		return nil, err
 	}
+	if len(users) == 0 {
+		service.logger.Error(fmt.Sprintf("UserService: No users found"))
+		responseBody := response.HTTPResponse{
+			Code:    404,
+			Message: "No users found",
+			Content: map[string]interface{}{},
+		}
+		return &responseBody, nil
+	}
 	var usersMap []map[string]interface{}
 	for _, user := range users {
 		userMap := map[string]interface{}{
