@@ -11,7 +11,7 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - webcli-service-db
+      - library-api-db
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       timeout: 5s
