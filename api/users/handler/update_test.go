@@ -12,8 +12,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 	gomock "github.com/golang/mock/gomock"
 	"github.com/minand-mohan/library-app-api/api/response"
-	"github.com/minand-mohan/library-app-api/api/users/service/service_tests"
-	"github.com/minand-mohan/library-app-api/api/users/validator/validator_tests"
+	servicemocks "github.com/minand-mohan/library-app-api/api/users/service/mocks"
+	validatormocks "github.com/minand-mohan/library-app-api/api/users/validator/mocks"
 )
 
 func TestUpdateByUserId(t *testing.T) {
@@ -24,8 +24,8 @@ func TestUpdateByUserId(t *testing.T) {
 	app := fiber.New()
 
 	// Create a mock service and validator
-	mockService := service_tests.NewMockUserService(mockCtrl)
-	mockValidator := validator_tests.NewMockUserValidator(mockCtrl)
+	mockService := servicemocks.NewMockUserService(mockCtrl)
+	mockValidator := validatormocks.NewMockUserValidator(mockCtrl)
 
 	// Create a user handler instance
 	handler := NewUserHandler(mockService, mockValidator)

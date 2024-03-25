@@ -1,4 +1,4 @@
-package validator_tests
+package mocks
 
 import (
 	"reflect"

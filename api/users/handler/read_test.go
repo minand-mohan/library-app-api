@@ -10,9 +10,9 @@ import (
 	"github.com/gofiber/fiber/v2"
 	gomock "github.com/golang/mock/gomock"
 	"github.com/minand-mohan/library-app-api/api/response"
-	"github.com/minand-mohan/library-app-api/api/users/service/service_tests"
+	servicemocks "github.com/minand-mohan/library-app-api/api/users/service/mocks"
 	"github.com/minand-mohan/library-app-api/api/users/validator"
-	"github.com/minand-mohan/library-app-api/api/users/validator/validator_tests"
+	validatormocks "github.com/minand-mohan/library-app-api/api/users/validator/mocks"
 	"github.com/minand-mohan/library-app-api/utils"
 )
 
@@ -71,8 +71,8 @@ func TestFindAllUsers(t *testing.T) {
 
 			app := setupApp()
 			app.Get("/users", func(c *fiber.Ctx) error {
-				validator := validator_tests.NewMockUserValidator(mockCtrl)
-				service := service_tests.NewMockUserService(mockCtrl)
+				validator := validatormocks.NewMockUserValidator(mockCtrl)
+				service := servicemocks.NewMockUserService(mockCtrl)
 				if tc.mockServiceExpectResponse != nil {
 					service.EXPECT().FindAllUsers(gomock.Any()).Return(tc.mockServiceExpectResponse, tc.mockServiceExpectError)
 				}
@@ -165,7 +165,7 @@ func TestFindByUserId(t *testing.T) {
 			app := setupApp()
 			app.Get("/users/:id", func(c *fiber.Ctx) error {
 				logger := utils.NewLogger()
-				service := service_tests.NewMockUserService(mockCtrl)
+				service := servicemocks.NewMockUserService(mockCtrl)
 				validator := validator.NewUserValidator(*logger)
 				if tc.mockServiceExpectResponse != nil {
 					service.EXPECT().FindByUserId(gomock.Any()).Return(tc.mockServiceExpectResponse, tc.mockServiceExpectError)

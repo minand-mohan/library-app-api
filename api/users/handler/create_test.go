@@ -11,8 +11,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 	gomock "github.com/golang/mock/gomock"
 	"github.com/minand-mohan/library-app-api/api/response"
-	"github.com/minand-mohan/library-app-api/api/users/service/service_tests"
-	"github.com/minand-mohan/library-app-api/api/users/validator/validator_tests"
+	servicemocks "github.com/minand-mohan/library-app-api/api/users/service/mocks"
+	validatormocks "github.com/minand-mohan/library-app-api/api/users/validator/mocks"
 )
 
 func TestCreateUser(t *testing.T) {
@@ -100,8 +100,8 @@ func TestCreateUser(t *testing.T) {
 			app := setupApp()
 			app.Post("/users", func(c *fiber.Ctx) error {
 				// logger := utils.NewLogger()
-				validator := validator_tests.NewMockUserValidator(mockCtrl)
-				service := service_tests.NewMockUserService(mockCtrl)
+				validator := validatormocks.NewMockUserValidator(mockCtrl)
+				service := servicemocks.NewMockUserService(mockCtrl)
 				if tc.mockServiceExpectResponse != nil {
 					service.EXPECT().CreateUser(gomock.Any()).Return(tc.mockServiceExpectResponse, tc.mockServiceExpectError)
 				}

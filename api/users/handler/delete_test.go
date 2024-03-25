@@ -10,7 +10,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	gomock "github.com/golang/mock/gomock"
 	"github.com/minand-mohan/library-app-api/api/response"
-	"github.com/minand-mohan/library-app-api/api/users/service/service_tests"
+	"github.com/minand-mohan/library-app-api/api/users/service/mocks"
 	"github.com/minand-mohan/library-app-api/api/users/validator"
 	"github.com/minand-mohan/library-app-api/utils"
 )
@@ -66,7 +66,7 @@ func TestDeleteByUserId(t *testing.T) {
 			app := setupApp()
 			app.Delete("/users/:id", func(c *fiber.Ctx) error {
 				logger := utils.NewLogger()
-				service := service_tests.NewMockUserService(mockCtrl)
+				service := mocks.NewMockUserService(mockCtrl)
 				validator := validator.NewUserValidator(*logger)
 				if tc.mockServiceExpectResponse != nil {
 					service.EXPECT().DeleteByUserId(gomock.Any()).Return(tc.mockServiceExpectResponse, tc.mockServiceExpectError)

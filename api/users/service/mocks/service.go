@@ -1,4 +1,4 @@
-package service_tests
+package mocks
 
 import (
 	"reflect"
