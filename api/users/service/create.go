@@ -31,7 +31,7 @@ func (service *UserServiceImpl) CreateUser(userReq *dto.UserRequestBody) (*respo
 			Message: "Bad request, user already exists",
 			Content: responseContent,
 		}
-		return &responseBody, errors.New("User already exists")
+		return &responseBody, errors.New("user already exists")
 	}
 
 	err = service.repo.CreateUser(userObj)

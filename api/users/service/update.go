@@ -28,6 +28,7 @@ func (service *UserServiceImpl) UpdateByUserId(id uuid.UUID, userReqBody *dto.Us
 		return &responseBody, nil
 	}
 
+	// Check if the user with updated email, username or phone already exists with a different id
 	existingUser, err := service.repo.FindByEmailOrUsernameOrPhoneNotUuid(*userObj.Email, *userObj.Username, *userObj.Phone, id)
 	if err == nil {
 		service.logger.Error(fmt.Sprintf("UserService: User with email %s, username %s or phone %s already exists", *userObj.Email, *userObj.Username, *userObj.Phone))
