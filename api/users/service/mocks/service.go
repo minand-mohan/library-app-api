@@ -15,12 +15,12 @@ type MockUserService struct {
 	recorder *MockUserServiceMockRecorder
 }
 
-// MockUserServiceMockRecorder is the mock recorder for MockUserHandler.
+// MockUserServiceMockRecorder is the mock recorder for MockUserService.
 type MockUserServiceMockRecorder struct {
 	mock *MockUserService
 }
 
-// NewMockUserHandler creates a new mock instance.
+// NewMockUserService creates a new mock instance.
 func NewMockUserService(ctrl *gomock.Controller) *MockUserService {
 	mock := &MockUserService{ctrl: ctrl}
 	mock.recorder = &MockUserServiceMockRecorder{mock}

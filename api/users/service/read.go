@@ -13,7 +13,12 @@ func (service *UserServiceImpl) FindAllUsers(queryParams *dto.UserQueryParams) (
 	users, err := service.repo.FindAllUsers(queryParams)
 	if err != nil {
 		service.logger.Error(fmt.Sprintf("UserService: Error while finding all users: %s", err))
-		return nil, err
+		responseBody := response.HTTPResponse{
+			Code:    500,
+			Message: "Internal Server Error",
+			Content: map[string]interface{}{},
+		}
+		return &responseBody, err
 	}
 	if len(users) == 0 {
 		service.logger.Error(fmt.Sprintf("UserService: No users found"))
@@ -42,7 +47,7 @@ func (service *UserServiceImpl) FindAllUsers(queryParams *dto.UserQueryParams) (
 	}
 	responseBody := response.HTTPResponse{
 		Code:    200,
-		Message: "Users found",
+		Message: "Users found successfully",
 		Content: responseContent,
 	}
 	return &responseBody, nil
