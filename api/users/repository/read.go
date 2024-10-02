@@ -6,15 +6,6 @@ import (
 	"github.com/minand-mohan/library-app-api/database/models"
 )
 
-func (repo *UserRepositoryImpl) FindByEmailOrUsernameOrPhoneNotUuid(email string, username string, phone string, id uuid.UUID) (*models.User, error) {
-	var user models.User
-	result := repo.db.First(&user, "(email = ? OR username = ? OR phone = ?) AND id != ?", email, username, phone, id)
-	if result.Error != nil {
-		return nil, result.Error
-	}
-	return &user, nil
-}
-
 func (repo *UserRepositoryImpl) FindAllUsers(queryParams *dto.UserQueryParams) ([]models.User, error) {
 	var users []models.User
 	dbQuery := GenerateDbQueries(queryParams)

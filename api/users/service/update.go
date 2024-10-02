@@ -1,8 +1,8 @@
 package service
 
 import (
-	"errors"
 	"fmt"
+	"strings"
 
 	"github.com/google/uuid"
 	"github.com/minand-mohan/library-app-api/api/response"
@@ -25,28 +25,22 @@ func (service *UserServiceImpl) UpdateByUserId(id uuid.UUID, userReqBody *dto.Us
 			Message: "User not found.",
 			Content: map[string]interface{}{},
 		}
-		return &responseBody, nil
+		return &responseBody, err
 	}
 
-	// Check if the user with updated email, username or phone already exists with a different id
-	existingUser, err := service.repo.FindByEmailOrUsernameOrPhoneNotUuid(*userObj.Email, *userObj.Username, *userObj.Phone, id)
-	if err == nil {
-		service.logger.Error(fmt.Sprintf("UserService: User with email %s, username %s or phone %s already exists", *userObj.Email, *userObj.Username, *userObj.Phone))
-		responseContent := map[string]interface{}{
-			"id":       existingUser.ID,
-			"username": existingUser.Username,
-			"email":    existingUser.Email,
-			"phone":    existingUser.Phone,
-		}
-		responseBody := response.HTTPResponse{
-			Code:    400,
-			Message: "Bad request, values already exists",
-			Content: responseContent,
-		}
-		return &responseBody, errors.New("User already exists")
-	}
 	updatedUserObj, err := service.repo.UpdateByUserId(id, userObj)
 	if err != nil {
+		// if duplicate key value error return 400
+		if strings.Contains(err.Error(), "duplicate key value violates unique constraint") {
+			service.logger.Error(fmt.Sprintf("UserService: Error while updating user: %s", err))
+			responseBody := response.HTTPResponse{
+				Code:    400,
+				Message: "Bad request, non-unique values",
+				Content: map[string]interface{}{},
+			}
+			return &responseBody, err
+		}
+
 		service.logger.Error(fmt.Sprintf("UserService: Error while updating user: %s", err))
 		responseBody := response.HTTPResponse{
 			Code:    500,

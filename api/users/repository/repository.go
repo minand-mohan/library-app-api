@@ -10,7 +10,6 @@ import (
 type UserRepository interface {
 	CreateUser(userObj *models.User) error
 	FindByEmailOrUsernameOrPhone(email string, username string, phone string) (*models.User, error)
-	FindByEmailOrUsernameOrPhoneNotUuid(email string, username string, phone string, id uuid.UUID) (*models.User, error)
 	FindAllUsers(queryParams *dto.UserQueryParams) ([]models.User, error)
 	FindByUserId(id uuid.UUID) (*models.User, error)
 	UpdateByUserId(id uuid.UUID, user *models.User) (*models.User, error)

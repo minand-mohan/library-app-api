@@ -56,19 +56,6 @@ func (mr *MockUserRepositoryMockRecorder) FindByEmailOrUsernameOrPhone(arg0, arg
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByEmailOrUsernameOrPhone", reflect.TypeOf((*MockUserRepository)(nil).FindByEmailOrUsernameOrPhone), arg0, arg1, arg2)
 }
 
-func (m *MockUserRepository) FindByEmailOrUsernameOrPhoneNotUuid(arg0 string, arg1 string, arg2 string, arg3 uuid.UUID) (*models.User, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindByEmailOrUsernameOrPhoneNotUuid", arg0, arg1, arg2, arg3)
-	ret0, _ := ret[0].(*models.User)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-func (mr *MockUserRepositoryMockRecorder) FindByEmailOrUsernameOrPhoneNotUuid(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByEmailOrUsernameOrPhoneNotUuid", reflect.TypeOf((*MockUserRepository)(nil).FindByEmailOrUsernameOrPhoneNotUuid), arg0, arg1, arg2, arg3)
-}
-
 func (m *MockUserRepository) FindAllUsers(arg0 *dto.UserQueryParams) ([]models.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindAllUsers", arg0)
