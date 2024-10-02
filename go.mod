@@ -11,6 +11,7 @@ require (
 )
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.5.2
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/golang/mock v1.6.0
 	github.com/jackc/pgpassfile v1.0.0 // indirect
@@ -29,4 +30,5 @@ require (
 	golang.org/x/crypto v0.14.0 // indirect
 	golang.org/x/sys v0.14.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
+	gopkg.in/DATA-DOG/go-sqlmock.v1 v1.3.0
 )

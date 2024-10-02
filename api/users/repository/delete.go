@@ -5,6 +5,7 @@ import (
 	"github.com/minand-mohan/library-app-api/database/models"
 )
 
+// DeleteByUserId deletes a user by id
 func (repo *UserRepositoryImpl) DeleteByUserId(id uuid.UUID) error {
 	var user models.User
 	result := repo.db.Delete(&user, id)
